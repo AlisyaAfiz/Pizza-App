@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css"
 
@@ -78,8 +78,12 @@ function Pizza({name, ingredients, price, photoName, soldOut}) {
     );
 }
 
-function Menu() {
-    const listPizza = pizzaData.map(pizza => 
+function Menu({filter}) {
+    const filteredPizzas = pizzaData.filter(pizza =>
+        pizza.name.toLowerCase().includes(filter.toLowerCase()) ||
+        pizza.ingredients.toLowerCase().includes(filter.toLowerCase())
+    );
+    const listPizza = filteredPizzas.map((pizza, index) => (
         <li><Pizza 
         name={pizza.name} 
         ingredients={pizza.ingredients} 
@@ -87,7 +91,7 @@ function Menu() {
         photoName={pizza.photoName} 
         soldOut={pizza.soldOut}
         />
-        </li>)
+        </li>))
     const currentHour = new Date().getHours();
     const isOpen = currentHour >= 10 && currentHour <= 22;
     return (
@@ -116,10 +120,19 @@ function Footer() {
 }
 
 function App() {
+    const [filter, setFilter] = useState("");
+
     return (
         <div className="container">
             <Header />
-            <Menu />
+            <input 
+                type="text" 
+                placeholder="Search pizzas..." 
+                value={filter} 
+                onChange={(e) => setFilter(e.target.value)} 
+                className="search"
+            />
+            <Menu filter={filter} />
             <Footer />
         </div>
     );
