@@ -80,7 +80,14 @@ function Pizza({name, ingredients, price, photoName, soldOut}) {
 
 function Menu() {
     const listPizza = pizzaData.map(pizza => 
-        <li><Pizza {...pizza}/></li>)
+        <li><Pizza 
+        name={pizza.name} 
+        ingredients={pizza.ingredients} 
+        price={pizza.price} 
+        photoName={pizza.photoName} 
+        soldOut={pizza.soldOut}
+        />
+        </li>)
     const currentHour = new Date().getHours();
     const isOpen = currentHour >= 10 && currentHour <= 22;
     return (
